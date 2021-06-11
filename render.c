@@ -119,7 +119,10 @@ void
 renderQueue()
 {
 	short i, x = originX + size * (GAP + BOARD_W), y = originY;
+	SDL_Rect renderQuad = { x, y, 4 * size, 4 * PREVIEW * size };
 
+	SDL_SetRenderDrawColor(renderer, BG);
+	SDL_RenderFillRect(renderer, &renderQuad);
 	for (i = 1; i <= PREVIEW; ++i) {
 		renderPreview(x, y, QUEUE_ELEM(i));
 		y += 4 * size;

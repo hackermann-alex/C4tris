@@ -21,23 +21,6 @@ move(uint8_t dir)
 }
 
 void
-genTetromino()
-{
-	uint8_t piece;
-	short i;
-
-	if (game.head == game.tail)
-		return;
-	game.head = (game.head + 1) % QUEUE_SZ;
-	piece = game.queue[game.head] - 1;
-
-	for (i = 0; i < 8; ++i)
-		game.currPiece[i] = pieceCord[8 * piece + i];
-	for (i = 0; i < 8; i += 2)
-		game.currPiece[i] += 3;
-}
-
-void
 genPieces()
 {
 	uint8_t tmp, randIdx;
@@ -55,6 +38,24 @@ genPieces()
 		game.queue[(start + i) % QUEUE_SZ] = game.queue[randIdx];
 		game.queue[randIdx] = tmp;
 	}
+}
+
+void
+genTetromino()
+{
+	uint8_t piece;
+	short i;
+
+	if (game.head == game.tail)
+		return;
+	game.head = (game.head + 1) % QUEUE_SZ;
+	piece = game.queue[game.head] - 1;
+
+	for (i = 0; i < 8; ++i)
+		game.currPiece[i] = pieceCord[8 * piece + i];
+	for (i = 0; i < 8; i += 2)
+		game.currPiece[i] += 3;
+	genPieces();
 }
 
 void

@@ -45,6 +45,9 @@ loop:
 			case SDLK_RIGHT:
 				move(RIGHT);
 				break;
+			case SDLK_SPACE:
+				genTetromino();
+				renderQueue();
 			}
 			renderPiece();
 			SDL_RenderPresent(renderer);
