@@ -17,4 +17,4 @@ game.o: game.c game.h
 	${CC} ${CFLAGS} -c -o $@ $<
 
 clean:
-	rm *.o
+	rm ${OBJ}

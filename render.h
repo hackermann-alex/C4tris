@@ -8,6 +8,8 @@
 uint8_t init();
 void renderBoard();
 void renderQueue();
+void clearPiece();
+void renderPiece();
 void quit(uint8_t code);
 
 #endif

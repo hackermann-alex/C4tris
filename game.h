@@ -11,14 +11,15 @@
 #define QUEUE_ELEM(i) game.queue[(game.head + (i)) % QUEUE_SZ]
 
 enum tetrominos { NONE, I, J, L, O, S, T, Z };
+enum dir { UP, DOWN, LEFT, RIGHT };
 
-const static uint8_t pieceCord[56] = { 0, 1, 1, 1, 2, 1, 3, 1,
-				       1, 1, 2, 1, 0, 0, 0, 1,
-				       1, 1, 2, 1, 2, 0, 0, 1,
-				       0, 0, 1, 0, 0, 1, 1, 1,
-				       1, 1, 2, 0, 1, 0, 0, 1,
-				       1, 1, 2, 1, 1, 0, 0, 1,
-				       1, 1, 2, 1, 1, 0, 0, 0 };
+const static uint8_t pieceCord[7 * 8] = { 0, 1, 1, 1, 2, 1, 3, 1,
+					  1, 1, 2, 1, 0, 0, 0, 1,
+					  1, 1, 2, 1, 2, 0, 0, 1,
+					  1, 0, 2, 0, 1, 1, 2, 1,
+					  1, 1, 2, 0, 1, 0, 0, 1,
+					  1, 1, 2, 1, 1, 0, 0, 1,
+					  1, 1, 2, 1, 1, 0, 0, 0 };
 
 typedef struct {
 	uint8_t currPiece[8];

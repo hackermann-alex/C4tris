@@ -1,5 +1,6 @@
 #include "game.h"
 #include "render.h"
+#include <stdio.h>
 
 extern SDL_Renderer *renderer;
 
@@ -20,6 +21,8 @@ gameLoop()
 
 	newGame();
 	renderBoard();
+	genTetromino();
+	renderPiece();
 	renderQueue();
 	SDL_RenderPresent(renderer);
 loop:
@@ -27,6 +30,24 @@ loop:
 		switch (e.type) {
 		case SDL_QUIT:
 			return;
+		case SDL_KEYDOWN:
+			clearPiece();
+			switch (e.key.keysym.sym) {
+			case SDLK_UP:
+				move(UP);
+				break;
+			case SDLK_DOWN:
+				move(DOWN);
+				break;
+			case SDLK_LEFT:
+				move(LEFT);
+				break;
+			case SDLK_RIGHT:
+				move(RIGHT);
+				break;
+			}
+			renderPiece();
+			SDL_RenderPresent(renderer);
 		}
 	}
 	goto loop;

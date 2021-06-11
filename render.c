@@ -8,7 +8,7 @@
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 enum codes { SUCCESS, INIT_SDL, RENDERER, WINDOW };
-const static uint8_t colours[3 * 8] = { 0x80, 0x80, 0x80,
+const static uint8_t colours[8 * 3] = { 0x80, 0x80, 0x80,
 					0x00, 0xFF, 0xFF,
 					0x00, 0x00, 0xFF,
 					0xFF, 0xAA, 0x00,
@@ -39,8 +39,7 @@ renderTile(uint8_t row, uint8_t col)
 	if (!i) {
 		renderQuad.x += 1;
 		renderQuad.y += 1;
-		renderQuad.w -= 2;
-		renderQuad.h -= 2;
+		renderQuad.w = renderQuad.h = size - 2;
 		SDL_SetRenderDrawColor(renderer, GRID_COLOUR, 0xFF);
 		SDL_RenderDrawRect(renderer, &renderQuad);
 	}
@@ -66,6 +65,27 @@ renderPreview(short x, short y, uint8_t piece)
 }
 
 void
+clearPiece()
+{
+	short i;
+	SDL_Rect renderQuad = { 0, 0, size, size };
+
+	for (i = 0; i < 8; ++i) {
+		renderQuad.x = originX + size * game.currPiece[i];
+		renderQuad.y = originY + size * game.currPiece[++i];
+		SDL_SetRenderDrawColor(renderer,
+				colours[0], colours[1], colours[2], 0xFF);
+		SDL_RenderFillRect(renderer, &renderQuad);
+		renderQuad.x += 1;
+		renderQuad.y += 1;
+		renderQuad.w = renderQuad.h = size - 2;
+		SDL_SetRenderDrawColor(renderer, GRID_COLOUR, 0xFF);
+		SDL_RenderDrawRect(renderer, &renderQuad);
+		renderQuad.w = renderQuad.h = size;
+	}
+}
+
+void
 renderPiece()
 {
 	short i;
@@ -74,13 +94,13 @@ renderPiece()
 	if (!game.queue[game.head])
 		return;
 	for (i = 0; i < 8; ++i) {
-		renderQuad.x = game.currPiece[i];
-		renderQuad.y = game.currPiece[++i];
+		renderQuad.x = originX + size * game.currPiece[i];
+		renderQuad.y = originY + size * game.currPiece[++i];
 		SDL_SetRenderDrawColor(renderer,
-				colours[game.queue[game.head]],
-				colours[game.queue[game.head] + 1],
-				colours[game.queue[game.head] + 2], 0xFF);
-		SDL_RenderDrawRect(renderer, &renderQuad);
+				colours[3 * game.queue[game.head]],
+				colours[3 * game.queue[game.head] + 1],
+				colours[3 * game.queue[game.head] + 2], 0xFF);
+		SDL_RenderFillRect(renderer, &renderQuad);
 	}
 }
 

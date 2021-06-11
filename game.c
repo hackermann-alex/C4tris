@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-enum dir { UP, DOWN, LEFT, RIGHT };
-
 game_t game;
 
 inline uint8_t
@@ -30,11 +28,13 @@ genTetromino()
 
 	if (game.head == game.tail)
 		return;
-	piece = game.queue[game.head] - 1;
 	game.head = (game.head + 1) % QUEUE_SZ;
+	piece = game.queue[game.head] - 1;
 
 	for (i = 0; i < 8; ++i)
 		game.currPiece[i] = pieceCord[8 * piece + i];
+	for (i = 0; i < 8; i += 2)
+		game.currPiece[i] += 3;
 }
 
 void
