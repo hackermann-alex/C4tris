@@ -1,7 +1,7 @@
 #include "game.h"
 #include "render.h"
 
-#define NAME "Tetris"
+#define NAME "C4tris"
 #define BG 0x10, 0x1A, 0x1D, 0xFF 
 #define GRID_COLOUR 0xE0, 0xE0, 0xE0
 
