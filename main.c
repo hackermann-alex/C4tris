@@ -19,7 +19,8 @@ gameLoop()
 	SDL_Event e;
 
 	newGame();
-	renderScene();
+	renderBoard();
+	renderQueue();
 	SDL_RenderPresent(renderer);
 loop:
 	while (SDL_WaitEvent(&e)) {

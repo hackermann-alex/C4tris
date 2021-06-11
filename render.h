@@ -3,8 +3,11 @@
 
 #include <SDL2/SDL.h>
 
+#define GAP 1
+
 uint8_t init();
-void renderScene();
+void renderBoard();
+void renderQueue();
 void quit(uint8_t code);
 
 #endif
