@@ -32,6 +32,7 @@ typedef struct {
 
 void newGame();
 void move(uint8_t dir);
+void depositTetromino();
 void genTetromino();
 
 #endif

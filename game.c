@@ -41,6 +41,16 @@ genPieces()
 }
 
 void
+depositTetromino()
+{
+	short i;
+
+	for (i = 0; i < 8; i += 2)
+		game.board[BOARD_W * game.currPiece[i + 1] + game.currPiece[i]]
+			= game.queue[game.head];
+}
+
+void
 genTetromino()
 {
 	uint8_t piece;
