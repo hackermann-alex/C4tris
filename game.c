@@ -14,9 +14,14 @@ queueLen()
 void
 move(uint8_t dir)
 {
-	short i, diff = ((dir & 1) << 1) - 1;
+	const static uint8_t bounds[4] = { 0, BOARD_H - 1, 0, BOARD_W - 1 };
+	short i, start = !(dir >> 1), diff = ((dir & 1) << 1) - 1;
 
-	for (i = !(dir >> 1); i < 8; i += 2)
+	for (i = start; i < 8; i += 2) {
+		if (game.currPiece[i] == bounds[dir])
+			return;
+	}
+	for (i = start; i < 8; i += 2)
 		game.currPiece[i] += diff;
 }
 
