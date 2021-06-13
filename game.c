@@ -21,6 +21,12 @@ move(uint8_t dir)
 		if (game.currPiece[i] == bounds[dir])
 			return;
 	}
+	for (i = 0; i < 8; i += 2) {
+		if (game.board[BOARD_W * game.currPiece[i + 1] +
+				game.currPiece[i] +
+				diff * (start ? BOARD_W : 1)])
+			return;
+	}
 	for (i = start; i < 8; i += 2)
 		game.currPiece[i] += diff;
 }
