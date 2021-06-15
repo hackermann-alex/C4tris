@@ -33,6 +33,7 @@ typedef struct {
 void newGame();
 uint8_t move(int8_t x, int8_t y);
 uint8_t rotate(int8_t rotation);
+void swap();
 void depositTetromino();
 void genTetromino();
 

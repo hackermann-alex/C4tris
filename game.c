@@ -170,6 +170,17 @@ genTetromino()
 }
 
 void
+swap()
+{
+	uint8_t tmp = game.hold;
+
+	game.hold = game.queue[game.head];
+	game.queue[game.head] = tmp;
+	if (!tmp)
+		genTetromino();
+}
+
+void
 newGame()
 {
 	short i;

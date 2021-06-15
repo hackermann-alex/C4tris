@@ -70,6 +70,12 @@ loop:
 				clearPiece();
 				rotate(-1);
 				break;
+			case SDLK_c:
+				clearPiece();
+				swap();
+				renderHold();
+				renderQueue();
+				break;
 			case SDLK_SPACE:
 				depositTetromino();
 				genTetromino();

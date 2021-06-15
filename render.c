@@ -129,6 +129,17 @@ renderQueue()
 	}
 }
 
+void
+renderHold()
+{
+	short x = originX - size * (GAP + 4);
+	SDL_Rect renderQuad = { x, originY, 4 * size, 4 * size };
+
+	SDL_SetRenderDrawColor(renderer, BG);
+	SDL_RenderFillRect(renderer, &renderQuad);
+	renderPreview(x, originY, game.hold);
+}
+
 uint8_t
 init()
 {
