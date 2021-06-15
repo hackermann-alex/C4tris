@@ -11,24 +11,78 @@ queueLen()
 		game.tail - game.head + (game.head > game.tail) * QUEUE_SZ + 1;
 }
 
-void
-move(uint8_t dir)
+uint8_t
+move(int8_t x, int8_t y)
 {
-	const static uint8_t bounds[4] = { 0, BOARD_H - 1, 0, BOARD_W - 1 };
-	short i, start = !(dir >> 1), diff = ((dir & 1) << 1) - 1;
+	const static int8_t bounds[3] = { -1, BOARD_W, BOARD_H };
+	short i;
 
-	for (i = start; i < 8; i += 2) {
-		if (game.currPiece[i] == bounds[dir])
-			return;
+/* Bounds checking */
+	for (i = 0; i < 8; i += 2) {
+		if (game.currPiece[i] + x == bounds[x > 0] ||
+				game.currPiece[i + 1] + y == bounds[(y > 0) * 2])
+			return 0;
+	}
+/* Occupied tile checking */
+	for (i = 0; i < 8; i += 2) {
+		if (game.board[BOARD_W * (game.currPiece[i + 1] + y) +
+				game.currPiece[i] + x])
+			return 0;
 	}
 	for (i = 0; i < 8; i += 2) {
-		if (game.board[BOARD_W * game.currPiece[i + 1] +
-				game.currPiece[i] +
-				diff * (start ? BOARD_W : 1)])
-			return;
+		game.currPiece[i] += x;
+		game.currPiece[i + 1] += y;
 	}
-	for (i = start; i < 8; i += 2)
-		game.currPiece[i] += diff;
+	return 1;
+}
+
+uint8_t
+rotate(int8_t rot)
+{
+/*
+	const static int8_t turnTable[8 * 8] = { -1,  0, -1,  1,  0, -2, -1, -2,
+						  1,  0,  1, -1,  0,  2,  1,  2, 
+						  1,  0,  1, -1,  0,  2,  1,  2,
+						 -1,  0, -1,  1,  0, -2, -1, -2,
+						  1,  0,  1,  1,  0, -2,  1, -2,
+						 -1,  0, -1, -1,  0,  2, -1,  2,
+						 -1,  0, -1, -1,  0,  2, -1,  2,
+						  1,  0,  1,  1,  0, -2,  1, -2 };
+	const static int8_t iTable[8 * 8] = { -2,  0,  1,  0, -2, -1,  1,  2,  
+					       2,  0, -1,  0,  2,  1, -1, -2,  
+					      -1,  0,  2,  0, -1,  2,  2, -1,  
+					       1,  0, -2,  0,  1, -2, -2,  1,  
+					       2,  0, -1,  0,  2,  1, -1, -2,  
+					      -2,  0,  1,  0, -2, -1,  1,  2,  
+					       1,  0, -2,  0,  1, -2, -2,  1,  
+					      -1,  0,  2,  0, -1,  2,  2, -1 };
+*/
+	short i, j, tmp[8];
+
+	if (rot != -1 && rot != 1)
+		return 0;
+	switch (game.queue[game.head]) {
+	case O:
+		return 1;
+	case I:
+		return 1;
+	}
+	if (!game.currPiece[0] || game.currPiece[0] == BOARD_W - 1 ||
+			!game.currPiece[1] || game.currPiece[1] == BOARD_H - 1)
+		return 0;
+	for (i = 2; i < 8; i += 2) {
+		tmp[i] = game.currPiece[i];
+		tmp[i + 1] = game.currPiece[i + 1];
+		game.currPiece[i] = rot * (game.currPiece[i + 1] - game.currPiece[1]) + game.currPiece[0];
+		game.currPiece[i + 1] = rot * (game.currPiece[0] - tmp[i]) + game.currPiece[1];
+		if (game.board[BOARD_W * game.currPiece[i + 1] + game.currPiece[i]]) {
+			for (j = 2; j <= i + 1; ++j)
+				game.currPiece[j] = tmp[j];
+			return 0;
+		}
+	}
+	game.currRot = (4 + game.currRot + rot) % 4;
+	return 1;
 }
 
 void
@@ -64,8 +118,7 @@ depositTetromino()
 void
 genTetromino()
 {
-	uint8_t piece;
-	short i;
+	uint8_t piece, i;
 
 	if (game.head == game.tail)
 		return;
@@ -76,6 +129,7 @@ genTetromino()
 		game.currPiece[i] = pieceCord[8 * piece + i];
 	for (i = 0; i < 8; i += 2)
 		game.currPiece[i] += 3;
+	game.currRot = 0;
 	genPieces();
 }
 

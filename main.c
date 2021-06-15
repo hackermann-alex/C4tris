@@ -48,19 +48,27 @@ loop:
 			switch (e.key.keysym.sym) {
 			case SDLK_UP:
 				clearPiece();
-				move(UP);
+				move(0, -1);
 				break;
 			case SDLK_DOWN:
 				clearPiece();
-				move(DOWN);
+				move(0, 1);
 				break;
 			case SDLK_LEFT:
 				clearPiece();
-				move(LEFT);
+				move(-1, 0);
 				break;
 			case SDLK_RIGHT:
 				clearPiece();
-				move(RIGHT);
+				move(1, 0);
+				break;
+			case SDLK_z:
+				clearPiece();
+				rotate(1);
+				break;
+			case SDLK_x:
+				clearPiece();
+				rotate(-1);
 				break;
 			case SDLK_SPACE:
 				depositTetromino();
